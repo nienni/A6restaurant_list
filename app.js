@@ -21,8 +21,44 @@ db.once('open', () => {
 })
 
 //route
+//首頁index
 app.get('/', (req, res) => {
-  res.send('this is index of restaurant list')
+  res.send('this is index')
+})
+
+//瀏覽全部餐廳頁面
+app.get('/restaurants', (req, res) => {
+  res.send('瀏覽全部餐廳頁面')
+})
+
+//新增一個餐廳頁面（create）
+app.get('/', (req, res) => {
+  res.send('新增餐廳頁面')
+})
+
+//新增餐廳的功能
+app.post('/', (req, res) => {
+  res.send('新增餐廳功能鍵')
+})
+
+//瀏覽一個餐廳頁面（detail）
+app.get('/', (req, res) => {
+  res.send('餐廳詳細資訊')
+})
+
+//編輯餐廳頁面（edit）
+app.get('/', (req, res) => {
+  res.send('編輯頁面')
+})
+
+//編輯餐廳的功能
+app.post('/', (req, res) => {
+  res.send('編輯餐廳功能鍵')
+})
+
+//刪除餐廳
+app.post('/', (req, res) => {
+  res.send('刪除按鈕')
 })
 
 //listen on 
