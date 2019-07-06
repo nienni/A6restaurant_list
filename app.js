@@ -20,10 +20,17 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+//引用express-handlebars
+const exphbs = require('express-handlebars')
+
+//view engine
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.set('view engine', 'handlebars')
+
 //route
 //首頁index
 app.get('/', (req, res) => {
-  res.send('this is index')
+  res.render('index')
 })
 
 //瀏覽全部餐廳頁面
