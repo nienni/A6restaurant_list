@@ -30,7 +30,10 @@ app.set('view engine', 'handlebars')
 //route
 //首頁index
 app.get('/', (req, res) => {
-  res.render('index')
+  Restaurant.find((err, restaurants) => {
+    if (err) return console.error(err)
+    return res.render('index', { restaurants: restaurants })
+  })
 })
 
 //瀏覽全部餐廳頁面
@@ -39,7 +42,7 @@ app.get('/restaurants', (req, res) => {
 })
 
 //新增一個餐廳頁面（create）
-app.get('/', (req, res) => {
+app.get('/restayrants/new', (req, res) => {
   res.send('新增餐廳頁面')
 })
 
@@ -49,8 +52,8 @@ app.post('/', (req, res) => {
 })
 
 //瀏覽一個餐廳頁面（detail）
-app.get('/', (req, res) => {
-  res.send('餐廳詳細資訊')
+app.get('/restaurants/:id', (req, res) => {
+  res.render('detail')
 })
 
 //編輯餐廳頁面（edit）
