@@ -2,6 +2,12 @@
 const express = require('express')
 const app = express()
 
+//引用express-handlebars
+const exphbs = require('express-handlebars')
+
+//引用body-parser
+const bodyParser = require('body-parser')
+
 //載入mongoose
 const mongoose = require('mongoose')
 
@@ -20,12 +26,10 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-//引用express-handlebars
-const exphbs = require('express-handlebars')
-
 //view engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+app.use(bodyParser.urlencoded({ extended: true }))
 
 //route
 //首頁index
@@ -36,24 +40,36 @@ app.get('/', (req, res) => {
   })
 })
 
-//瀏覽全部餐廳頁面
-app.get('/restaurants', (req, res) => {
-  res.send('瀏覽全部餐廳頁面')
-})
-
 //新增一個餐廳頁面（create）
-app.get('/restayrants/new', (req, res) => {
-  res.send('新增餐廳頁面')
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
 })
 
 //新增餐廳的功能
-app.post('/', (req, res) => {
-  res.send('新增餐廳功能鍵')
+app.post('/restaurants', (req, res) => {
+  const restaurant = new Restaurant({
+    name: req.body.name,
+    category: req.body.category,
+    image: req.body.image,
+    location: req.body.location,
+    phone: req.body.phone,
+    description: req.body.description,
+  })
+
+  restaurant.save(err => {
+    if (err) return console.error(err)
+    return res.redirect('/')
+  })
 })
 
 //瀏覽一個餐廳頁面（detail）
 app.get('/restaurants/:id', (req, res) => {
   res.render('detail')
+})
+
+//瀏覽全部餐廳頁面
+app.get('/restaurants', (req, res) => {
+  res.send('瀏覽全部餐廳頁面')
 })
 
 //編輯餐廳頁面（edit）
