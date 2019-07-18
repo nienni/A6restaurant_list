@@ -64,7 +64,10 @@ app.post('/restaurants', (req, res) => {
 
 //瀏覽一個餐廳頁面（detail）
 app.get('/restaurants/:id', (req, res) => {
-  res.render('detail')
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) return console.error(err)
+    return res.render('detail', { restaurant: restaurant })
+  })
 })
 
 //瀏覽全部餐廳頁面
