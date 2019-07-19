@@ -53,7 +53,7 @@ app.post('/restaurants', (req, res) => {
     image: req.body.image,
     location: req.body.location,
     phone: req.body.phone,
-    description: req.body.description,
+    description: req.body.description
   })
 
   restaurant.save(err => {
@@ -63,32 +63,55 @@ app.post('/restaurants', (req, res) => {
 })
 
 //瀏覽一個餐廳頁面（detail）
-app.get('/restaurants/:id', (req, res) => {
-  Restaurant.findById(req.params.id, (err, restaurant) => {
+app.get('/restaurants/:_id', (req, res) => {
+  Restaurant.findById(req.params._id, (err, restaurant) => {
     if (err) return console.error(err)
     return res.render('detail', { restaurant: restaurant })
   })
 })
 
-//瀏覽全部餐廳頁面
-app.get('/restaurants', (req, res) => {
-  res.send('瀏覽全部餐廳頁面')
-})
-
 //編輯餐廳頁面（edit）
-app.get('/', (req, res) => {
-  res.send('編輯頁面')
+app.get('/restaurants/:_id/edit', (req, res) => {
+  Restaurant.findById(req.params._id, (err, restaurant) => {
+    if (err) return console.error(err)
+    return res.render('edit', { restaurant: restaurant })
+  })
 })
 
 //編輯餐廳的功能
-app.post('/', (req, res) => {
-  res.send('編輯餐廳功能鍵')
+app.post('/restaurants/:_id', (req, res) => {
+
+  console.log(req.body)
+
+  Restaurant.findById(req.params._id, (err, restaurant) => {
+    if (err) return console.error(err)
+
+    restaurant.name = req.body.name,
+      restaurant.category = req.body.category,
+      restaurant.location = req.body.location,
+      restaurant.phone = req.body.phone,
+      restaurant.description = req.body.description,
+      restaurant.rating = req.body.rating,
+      restaurant.image = req.body.image,
+
+      restaurant.save(err => {
+        if (err) return console.error(err)
+        return res.redirect(`/restaurants/${req.params._id}`)
+      })
+  })
 })
 
-//刪除餐廳
-app.post('/', (req, res) => {
-  res.send('刪除按鈕')
+//刪除餐廳功能
+app.post('/restaurants/:_id/delete', (req, res) => {
+  Restaurant.findById(req.params._id, (err, restaurant) => {
+    if (err) return console.error(err)
+    restaurant.remove(err => {
+      if (err) return console.error(err)
+      return res.redirect('/')
+    })
+  })
 })
+
 
 //listen on 
 app.listen(3000, () => {

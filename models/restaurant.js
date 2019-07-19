@@ -8,7 +8,7 @@ const restaurantSchema = new Schema({
 
   name: {
     type: String,
-
+    requires: true
   },
 
   name_en: {
@@ -17,19 +17,23 @@ const restaurantSchema = new Schema({
 
   category: {
     type: String,
+    requires: true
 
   },
 
   image: {
     type: String,
+    requires: true
   },
 
   location: {
     type: String,
+    requires: true
   },
 
   phone: {
     type: String,
+    requires: true
   },
 
   google_map: {
@@ -38,10 +42,12 @@ const restaurantSchema = new Schema({
 
   rating: {
     type: Number,
+    requires: true
   },
 
   description: {
     type: String,
+    requires: true
   }
 })
 
