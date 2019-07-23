@@ -81,8 +81,6 @@ app.get('/restaurants/:_id/edit', (req, res) => {
 //編輯餐廳的功能
 app.post('/restaurants/:_id', (req, res) => {
 
-  console.log(req.body)
-
   Restaurant.findById(req.params._id, (err, restaurant) => {
     if (err) return console.error(err)
 
@@ -109,6 +107,18 @@ app.post('/restaurants/:_id/delete', (req, res) => {
       if (err) return console.error(err)
       return res.redirect('/')
     })
+  })
+})
+
+//search route
+app.get('/search', (req, res) => {
+  Restaurant.find((err, restaurant) => {
+    const keyword = req.query.keyword
+    if (err) return console.error(err)
+    const restaurants = restaurant.filter(({ name }) => {
+      return (name.toLowerCase().includes(keyword.toLowerCase()))
+    })
+    res.render('index', { restaurants: restaurants, keyword: keyword })
   })
 })
 
